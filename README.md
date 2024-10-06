@@ -124,6 +124,107 @@ java常见文件服务实现，封装统一常用 *RESTful* *API*，针对各文
          }
      ```
 
-     
 
-​	
+
+## 3. 測試
+
+無限網速，client 單線程
+![image](https://github.com/user-attachments/assets/f1de8e0a-1edf-48a5-93f3-cdf4871f9044)
+服務端監控
+![image](https://github.com/user-attachments/assets/e1f6770f-a2d4-474f-804f-5ea5bfbb2405)
+
+
+無限網速，client 2線程
+![image](https://github.com/user-attachments/assets/8e19ed1f-8677-4a8b-8f69-6472779bb2d5)
+服務端監控
+![image](https://github.com/user-attachments/assets/56d989a4-6de9-464e-92aa-4c5e9d972e8f)
+
+
+無限網速，client 5線程
+![image](https://github.com/user-attachments/assets/4855c690-ff15-4422-b834-3c6d23dc7746)
+服務端監控
+![image](https://github.com/user-attachments/assets/9115ce90-09c6-4a23-9434-b27015d97198)
+
+
+無限網速，client 單線程 filechannel 方法
+​![image](https://github.com/user-attachments/assets/85bd8032-59dc-46d9-9e3a-45fa779dcbce)
+服務端監控
+![image](https://github.com/user-attachments/assets/750bfd8f-3f4f-41eb-bd78-e0f134c46d20)
+
+
+無限網速，client 2線程 filechannel 方法
+![image](https://github.com/user-attachments/assets/ac81cb6c-bcd9-43ae-9ad4-0aafc095b9c5)
+服務端監控
+![image](https://github.com/user-attachments/assets/27371d4e-cb24-4c79-a9f6-6893cba87cb2)
+
+
+無限網速，client 5線程 filechannel 方法
+![image](https://github.com/user-attachments/assets/66600a0f-fd7d-42ba-a94a-dd7c0b4da5df)
+服務端監控
+![image](https://github.com/user-attachments/assets/2ca1bb82-ab83-430a-9ab2-80e8cfdcf75e)
+
+
+限網速5M，client 單線程
+![image](https://github.com/user-attachments/assets/ca983c70-6219-481a-99dd-4b32b64d5e75)
+服務端監控
+![image](https://github.com/user-attachments/assets/2540ab76-2635-4102-964c-d3434fed9b2a)
+
+限網速5M，client 2線程
+![image](https://github.com/user-attachments/assets/eb60984b-5e33-451c-8bf9-3ffc2da1c3de)
+服務端監控
+![image](https://github.com/user-attachments/assets/7502369b-f83d-4a84-bb17-f6ce31ef629d)
+
+限網速5M，client 5線程
+![image](https://github.com/user-attachments/assets/89aaf469-9b71-48e4-a8c4-b217bf5e88d2)
+服務端監控
+![image](https://github.com/user-attachments/assets/93576c55-be50-4f15-a965-d34380e09ab5)
+
+限網速5M，client 10線程
+![image](https://github.com/user-attachments/assets/9f31ea37-83f3-45c5-a480-6d60c6efc545)
+![image](https://github.com/user-attachments/assets/10710ebf-3cf7-4ac6-9055-22675e60384e)
+
+服務端監控
+![image](https://github.com/user-attachments/assets/bff3cf4f-0876-482a-ba5f-7df234ea785b)
+
+
+
+限網速10M，client 1線程
+![image](https://github.com/user-attachments/assets/1891c5b9-47c3-4e54-82dc-bb6695ffa643)
+服務端監控
+![image](https://github.com/user-attachments/assets/3b27f303-bd13-4aa4-a6ee-8cf554fc1ca0)
+
+限網速10M，client 2線程
+![image](https://github.com/user-attachments/assets/2a992b5e-5937-44a0-a9f8-befb7af3c4ad)
+服務端監控
+![image](https://github.com/user-attachments/assets/5a932e47-a7a4-453b-8000-61340626df01)
+
+
+限網速10M，client 5線程
+![image](https://github.com/user-attachments/assets/842e8db3-d90b-4c86-9644-6007f4324c3b)
+服務端監控
+![image](https://github.com/user-attachments/assets/e2ff4ac9-a565-4ece-92b3-de871b6b8414)
+
+限網速10M，client 10線程
+![image](https://github.com/user-attachments/assets/7c0e2d36-be6a-491e-8fca-ef9dbdbea92b)
+服務端監控
+![image](https://github.com/user-attachments/assets/380be47c-8196-4ea9-a6e4-facd214ab4e0)
+
+限網速20M，client 1線程
+![image](https://github.com/user-attachments/assets/3d6beb2a-72e8-46af-926a-0fead8e8ccb2)
+服務端監控
+![image](https://github.com/user-attachments/assets/edee1f98-8e52-4a02-82e2-820b8c9ee329)
+
+限網速20M，client 2線程
+![image](https://github.com/user-attachments/assets/144e4616-3988-414d-9eb7-3afd31e09fb8)
+服務端監控
+![image](https://github.com/user-attachments/assets/6e56775f-e75b-4e63-824b-cd7701a8a374)
+
+限網速20M，client 5線程
+![image](https://github.com/user-attachments/assets/ae06e73c-8ecb-49cd-a22f-5061ade24969)
+服務端監控
+![image](https://github.com/user-attachments/assets/366dba8b-6c47-4d83-8313-e1c2339a3f95)
+
+限網速20M，client 10線程
+![image](https://github.com/user-attachments/assets/6b6d5de2-7932-4847-8260-cb57659220b0)
+服務端監控
+![image](https://github.com/user-attachments/assets/72ac77bc-1952-41a7-98ee-37ce551a4d98)
