@@ -1,21 +1,18 @@
 package com.zszdevelop.file.controller;
 
 import com.zszdevelop.file.domian.FileResult;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.*;
 import java.util.List;
-
+@Slf4j
 @RestController
 @RequestMapping("/download")
 public class DownloadController {
@@ -30,11 +27,26 @@ public class DownloadController {
         return result;
     }
 
+    @RequestMapping(value = "/file/{fileName}", method = RequestMethod.HEAD)
+    public ResponseEntity<String> getFileSize(@PathVariable("fileName") String fileName) {
+        //log.info("GetFileSize from {}", fileName);
+        File file = new File(FILE_DIRECTORY + fileName);
+        if (file.exists() && file.isFile()) {
+            long fileSize = file.length();
+            log.info("GetFileSize from {} size: {}", fileName,fileSize);
+            //return ResponseEntity.ok().header("content-length", String.valueOf(fileSize)).build();
+            return ResponseEntity.ok()
+                    .contentLength(fileSize).build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/file/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(
             @PathVariable("fileName") String fileName,
             @RequestHeader(value = "Range", required = false) String rangeHeader) throws IOException {
-
+        log.info("rangeHeader is {}", rangeHeader);
         // 構建完整的文件路徑
         File file = new File(FILE_DIRECTORY + fileName);
 
@@ -45,12 +57,19 @@ public class DownloadController {
 
         long fileSize = file.length();
 
+
         // 如果沒有提供 Range 標頭，返回整個文件
         if (rangeHeader == null) {
-            return ResponseEntity.ok()
-                    .contentLength(fileSize)
-                    .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                    .body(new InputStreamResource(new FileInputStream(file)));
+            log.info("rangeHeader is null : file={}, contentLength={}", fileName, fileSize);
+            try (InputStream fileInputStream = new FileInputStream(file)) {
+                return ResponseEntity.ok()
+                        .contentLength(fileSize)
+                        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+                        .body(new InputStreamResource(fileInputStream));
+            } catch (IOException e) {
+                log.error("Error while creating FileInputStream", e);
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+            }
         }
 
         // 解析 Range 標頭

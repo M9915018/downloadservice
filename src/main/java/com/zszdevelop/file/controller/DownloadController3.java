@@ -7,11 +7,7 @@ import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -25,14 +21,30 @@ import java.util.List;
 public class DownloadController3 {
 
     private static final String FILE_DIRECTORY = "D:\\workdir\\file\\";
-    private static final long MAX_RATE = 1024 * 1024 * 5; // 每秒最大傳輸速率，10 MB/s
+    private static final long MAX_RATE = 1024 * 1024 * 20; // 每秒最大傳輸速率，20 MB/s
 //    private static final long CHUNK_SIZE = 1024 * 8;  // 每次傳輸的塊大小，8 KB
+
+    @RequestMapping(value = "/file/{fileName}", method = RequestMethod.HEAD)
+    public ResponseEntity<String> getFileSize(@PathVariable("fileName") String fileName) {
+       // log.info("GetFileSize from {}", fileName);
+        File file = new File(FILE_DIRECTORY + fileName);
+        if (file.exists() && file.isFile()) {
+            long fileSize = file.length();
+            log.info("GetFileSize from {} size: {}", fileName,fileSize);
+            //return ResponseEntity.ok().header("content-length", String.valueOf(fileSize)).build();
+            return ResponseEntity.ok()
+                    .contentLength(fileSize).build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 
     @GetMapping("/file/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(
             @PathVariable("fileName") String fileName,
             @RequestHeader(value = "Range", required = false) String rangeHeader) throws IOException, InterruptedException {
-
+        log.info("rangeHeader is {}", rangeHeader);
         File file = new File(FILE_DIRECTORY + fileName);
         if (!file.exists()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -41,6 +53,7 @@ public class DownloadController3 {
         long fileSize = file.length();
 
         if (rangeHeader == null) {
+            log.info("rangeHeader is null : file={}, contentLength={}", fileName, fileSize);
             return throttleFileTransfer(file, 0, fileSize,fileSize);
         }
 

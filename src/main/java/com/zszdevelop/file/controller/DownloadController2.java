@@ -6,31 +6,42 @@ import org.springframework.http.HttpRange;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.nio.channels.FileChannel;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
+@Slf4j
 @RestController
 @RequestMapping("/download2")
 public class DownloadController2 {
 
     private static final String FILE_DIRECTORY = "D:\\workdir\\file\\";
 
+
+    @RequestMapping(value = "/file/{fileName}", method = RequestMethod.HEAD)
+    public ResponseEntity<String> getFileSize(@PathVariable("fileName") String fileName) {
+        //log.info("GetFileSize from {}", fileName);
+        File file = new File(FILE_DIRECTORY + fileName);
+        if (file.exists() && file.isFile()) {
+            long fileSize = file.length();
+            log.info("GetFileSize from {} size: {}", fileName,fileSize);
+            //return ResponseEntity.ok().header("content-length", String.valueOf(fileSize)).build();
+            return ResponseEntity.ok()
+                    .contentLength(fileSize).build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @GetMapping("/file/{fileName}")
     public ResponseEntity<InputStreamResource> downloadFile(
             @PathVariable("fileName") String fileName,
             @RequestHeader(value = "Range", required = false) String rangeHeader) throws IOException {
-
+        log.info("rangeHeader is {}", rangeHeader);
         File file = new File(FILE_DIRECTORY + fileName);
         if (!file.exists()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -40,13 +51,19 @@ public class DownloadController2 {
 
         // 如果沒有範圍請求，則傳輸整個文件
         if (rangeHeader == null) {
+            log.info("rangeHeader is null : file={}, contentLength={}", fileName, fileSize);
             try (FileInputStream fis = new FileInputStream(file);
-                 FileChannel fileChannel = fis.getChannel()) {
-
+                 ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
+                byte[] buffer = new byte[1024];
+                int len;
+                while ((len = fis.read(buffer)) != -1) {
+                    bos.write(buffer, 0, len);
+                }
+                byte[] fileContent = bos.toByteArray();
                 return ResponseEntity.ok()
                         .contentLength(fileSize)
                         .contentType(MediaType.APPLICATION_OCTET_STREAM)
-                        .body(new InputStreamResource(fis));
+                        .body(new InputStreamResource(new ByteArrayInputStream(fileContent)));
             }
         }
 
@@ -58,8 +75,9 @@ public class DownloadController2 {
 
         long contentLength = end - start + 1;
 
-        try (FileInputStream fis = new FileInputStream(file);
-             FileChannel fileChannel = fis.getChannel()) {
+        try (FileInputStream fis = new FileInputStream(file))
+        {
+            FileChannel fileChannel = fis.getChannel();
 
             // 只讀取範圍內的內容
             ByteBuffer buffer = ByteBuffer.allocate((int) contentLength);
