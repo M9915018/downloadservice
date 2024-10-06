@@ -1,0 +1,30 @@
+# 开发环境配置
+server:
+  # 服务器的HTTP端口，默认为9310
+  port: 9310
+  servlet:
+    # 应用的访问路径
+    context-path: /
+file-server:
+  base:
+    #默认的文件名最大长度 100
+    fileNameMaxlength: 100
+    # 文件大小限制 50M(50 * 1024 * 1024=5242800)
+    maxSize: 10240000
+  # minio 文件服务
+#  minio:
+#    # minio地址
+#    endpoint: http://47.119.125.3:9000
+#    # minio 账号
+#    accesskey: minio
+#    # minio 密码
+#    secretKey: minio123
+#    # 存储的bucket名称，服务启动自动创建
+#    bucketName: test
+#    # 预览过期时间，默认60分钟，过期时间设置为0的时候，不设置过期时间
+#    expiry: 120
+  # 本地文件上传
+  local:
+    baseDir: D:\\workdir\\file
+    domain: http://127.0.0.1:9300
+    prefix: /statics
