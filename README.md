@@ -124,6 +124,24 @@ java常见文件服务实现，封装统一常用 *RESTful* *API*，针对各文
          }
      ```
 
-     
+
+
+## 3. 測試
+
+無限網速，client單線程
+![image](https://github.com/user-attachments/assets/faf37158-b674-4eee-a3c9-801be8cc06ab)
+服務端監控
+![image](https://github.com/user-attachments/assets/1af061fd-9f47-4af3-b040-c5b589c3dbde)
+
+無限網速，client 2線程
+![image](https://github.com/user-attachments/assets/0ee99f28-6e35-4062-9043-8db331cd7d4c)
+服務端監控
+![image](https://github.com/user-attachments/assets/477a0e9c-8263-42e2-8b5d-648cdeb587ca)
+
+無限網速，client 5線程
+![image](https://github.com/user-attachments/assets/c47d3972-73bc-47b6-baf7-cadd3e0ba186)
+服務端監控
+![image](https://github.com/user-attachments/assets/9af71ee4-8fe2-4f1d-a759-a61783871350)
+
 
 ​	
